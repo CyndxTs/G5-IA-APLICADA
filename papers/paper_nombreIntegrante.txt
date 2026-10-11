@@ -1,0 +1,6 @@
+Subir sus resumenes en formato pdf como "paper_<nombre>"
+
+donde <nombre> es su nombre y apellido separados por un guion bajo, por ejemplo paper_Edu_Valladares.pdf
+
+Recuerden que el pdf o es texto o incluso una presentación (todo en .pdf, o sea si es una presentacion lo pasas de pptx a pdf namas), la profesora solo quiere ver que entendimos el paper
+ah y referencienlo bien (formato APA o IEEE).
