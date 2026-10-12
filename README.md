@@ -97,17 +97,27 @@ proyecto/
    git clone https://github.com/CyndxTs/G5-IA-APLICADA.git
    cd G5-IA-APLICADA
    ```
-2. Crear un entorno virtual e instalar dependencias:
+
+2. **Instalar las dependencias requeridas:**
+   Es recomendable contar con las bibliotecas listadas en el proyecto. Ejecuta:
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # En Windows: venv\Scripts\activate
    pip install -r requirements.txt
    ```
-3. Ejecutar los notebooks en la carpeta `notebooks/` en el orden numerado para reproducir el Análisis Exploratorio (EDA) y el entrenamiento de los modelos.
+
+3. **Iniciar el entorno de Jupyter Notebook:**
+   Desde la misma terminal, levanta el servidor local ejecutando:
+   ```bash
+   jupyter-notebook
+   ```
+   *Nota: Este comando abrirá automáticamente una pestaña en tu navegador web apuntando a la raíz del proyecto.*
+
+4. **Ejecutar el código:**
+   * En la interfaz web de Jupyter, navega hacia el directorio `notebooks/`.
+   * Abre y ejecuta las celdas de forma secuencial, empezando por `01_eda.ipynb` y continuando con `02_modelos.ipynb`.
 
 ## 7. Integrantes del Grupo
 
-* [Nombre y Apellido 1] - [Código]
-* [Nombre y Apellido 2] - [Código]
-* [Nombre y Apellido 3] - [Código]
-* [Nombre y Apellido 4] - [Código]
+* Giovanni Junior Rojas Turin - [20220348]
+* Elvis Quispe Mamani - [20192663]
+* Eduardo Valladares Coronado - [20211669]
+* César Augusto Napurí de la Cruz - [20211692]
