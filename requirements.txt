@@ -3,3 +3,6 @@ pandas
 openpyxl
 lxml
 matplotlib
+seaborn
+scikit-learn
+tensorflow
