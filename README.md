@@ -82,9 +82,9 @@ proyecto/
 │   └── model_comparison.txt  
 ├── papers/                   
 │   └── paper_1_Quispe_Elvis.pdf
-│   └── paper_2_.pdf
-│   └── paper_3_.pdf
-│   └── paper_4_.pdf
+│   └── paper_2_Valladares_Eduardo.pdf
+│   └── paper_3_Rojas_Giovanni.pdf
+│   └── paper_4_Napurí_César.pdf
 ├── report.pdf                
 ├── presentation.pdf          
 └── requirements.txt          
