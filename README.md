@@ -81,7 +81,10 @@ proyecto/
 │   ├── plots/                
 │   └── model_comparison.txt  
 ├── papers/                   
-│   └── paper_integrante.pdf
+│   └── paper_1_Quispe_Elvis.pdf
+│   └── paper_2_.pdf
+│   └── paper_3_.pdf
+│   └── paper_4_.pdf
 ├── report.pdf                
 ├── presentation.pdf          
 └── requirements.txt          
@@ -91,8 +94,8 @@ proyecto/
 
 1. Clonar el repositorio:
    ```bash
-   git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git
-   cd TU_REPOSITORIO
+   git clone https://github.com/CyndxTs/G5-IA-APLICADA.git
+   cd G5-IA-APLICADA
    ```
 2. Crear un entorno virtual e instalar dependencias:
    ```bash
