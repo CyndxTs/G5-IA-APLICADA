@@ -1,4 +1,4 @@
-```bat
+
 @echo off
 setlocal
 title Setup - G5-IA-APLICADA
@@ -28,7 +28,7 @@ if errorlevel 1 (
     )
 
     echo.
-    echo [>] Instalando Python 3.12...
+    echo [INFO] Instalando Python 3.12...
     py install 3.12
 
     if errorlevel 1 (
@@ -42,7 +42,7 @@ if errorlevel 1 (
     echo [OK] Python 3.12 instalado correctamente.
 ) else (
     echo [OK] Python 3.12 encontrado.
-    echo [>] Version detectada:
+    echo [INFO] Version detectada:
     py -3.12 --version
 )
 
@@ -50,7 +50,7 @@ echo.
 echo === 2. Creando entorno virtual ===
 
 if not exist ".venv\Scripts\python.exe" (
-    echo [>] Creando entorno virtual .venv...
+    echo [INFO] Creando entorno virtual .venv...
     py -3.12 -m venv .venv
 
     if errorlevel 1 (
@@ -78,15 +78,15 @@ if errorlevel 1 (
 )
 
 echo [OK] Entorno virtual activado.
-echo [>] Python que se utilizara:
+echo [INFO] Python que se utilizara:
 python --version
-echo [>] Ruta del interprete:
+echo [INFO] Ruta del interprete:
 where python
 
 echo.
 echo === 4. Actualizando pip ===
 
-echo [>] Actualizando pip...
+echo [INFO] Actualizando pip...
 python -m pip install --upgrade pip
 
 if errorlevel 1 (
@@ -108,7 +108,7 @@ if not exist "requirements.txt" (
     exit /b 1
 )
 
-echo [>] Instalando dependencias desde requirements.txt...
+echo [INFO] Instalando dependencias desde requirements.txt...
 python -m pip install -r requirements.txt
 
 if errorlevel 1 (
@@ -118,6 +118,34 @@ if errorlevel 1 (
     exit /b 1
 )
 
+echo [OK] Dependencias instaladas correctamente.
+
+echo.
+echo === 6. Instalando soporte para notebooks de VS Code ===
+
+echo [INFO] Instalando ipykernel...
+python -m pip install ipykernel
+
+if errorlevel 1 (
+    echo.
+    echo [ERROR] No se pudo instalar ipykernel.
+    pause
+    exit /b 1
+)
+
+echo.
+echo [INFO] Registrando kernel del proyecto...
+python -m ipykernel install --sys-prefix --name g5-ia-aplicada --display-name "Python 3.12 (G5-IA-APLICADA)"
+
+if errorlevel 1 (
+    echo.
+    echo [ERROR] No se pudo registrar el kernel.
+    pause
+    exit /b 1
+)
+
+echo [OK] Kernel registrado correctamente.
+
 echo.
 echo ==========================================
 echo       CONFIGURACION COMPLETADA
@@ -126,9 +154,13 @@ echo.
 echo [OK] Python 3.12 disponible.
 echo [OK] Entorno virtual: .venv
 echo [OK] Dependencias instaladas.
+echo [OK] ipykernel instalado.
+echo [OK] Kernel de VS Code registrado.
+echo.
+echo En VS Code selecciona:
+echo Python 3.12 (G5-IA-APLICADA)
 echo.
 echo El entorno virtual permanece activado.
 echo.
 
 cmd /k
-```

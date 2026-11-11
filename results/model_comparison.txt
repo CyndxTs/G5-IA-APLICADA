@@ -1,0 +1,19 @@
+COMPARACIÓN DE MODELOS - Riesgo de sanción de proveedores (horizonte 12 meses)
+
+Entrenamiento: cortes hasta 2024-06-30 (11,610 filas, 241 positivos)
+Validación:    corte 2024-12-31 (8,406 filas, 208 positivos)
+Prueba:        corte 2025-06-30 (10,033 filas, 351 positivos)
+Referencia al azar (prevalencia en prueba): 0.035
+
+Resultados en PRUEBA (umbral elegido en validación):
+                    Hiperparámetro  Umbral  PR-AUC  ROC-AUC  Precision  Recall    F1  Recall top 10%  Brier
+Modelo                                                                                                     
+Regresión logística        C=0.001   0.721   0.112    0.715      0.154   0.188 0.169           0.316  0.155
+Árbol de decisión      max_depth=5   0.713   0.067    0.618      0.111   0.251 0.153           0.288  0.167
+KNN                          k=201   0.055   0.098    0.688      0.143   0.191 0.163           0.291  0.033
+MLP                       capas=16   0.757   0.123    0.704      0.164   0.222 0.189           0.348  0.137
+
+Mejor modelo por PR-AUC: MLP (0.123), 3.5 veces el azar.
+Baseline (regresión logística): 0.112.
+Recall en el top 10% de riesgo (MLP): 35%.
+Sancionados sin sanción previa: 79% del total en prueba.
