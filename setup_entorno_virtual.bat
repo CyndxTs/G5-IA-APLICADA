@@ -1,6 +1,6 @@
-
+```bat
 @echo off
-setlocal
+setlocal EnableExtensions EnableDelayedExpansion
 title Setup - G5-IA-APLICADA
 
 cd /d "%~dp0"
@@ -13,9 +13,13 @@ echo ==========================================
 echo.
 echo === 1. Verificando Python 3.12 ===
 
-py -3.12 --version >nul 2>&1
+set "PY312_VERSION="
 
-if errorlevel 1 (
+for /f "tokens=1,2" %%A in ('py -3.12 -c "import sys; print(sys.version_info[0], sys.version_info[1])" 2^>nul') do (
+    set "PY312_VERSION=%%A.%%B"
+)
+
+if not "!PY312_VERSION!"=="3.12" (
     echo [!] Python 3.12 no encontrado.
     echo.
     choice /C SN /M "Deseas instalar Python 3.12"
@@ -38,19 +42,53 @@ if errorlevel 1 (
         exit /b 1
     )
 
-    echo.
+    set "PY312_VERSION="
+
+    for /f "tokens=1,2" %%A in ('py -3.12 -c "import sys; print(sys.version_info[0], sys.version_info[1])" 2^>nul') do (
+        set "PY312_VERSION=%%A.%%B"
+    )
+
+    if not "!PY312_VERSION!"=="3.12" (
+        echo.
+        echo [ERROR] Python 3.12 sigue sin estar disponible.
+        pause
+        exit /b 1
+    )
+
     echo [OK] Python 3.12 instalado correctamente.
 ) else (
     echo [OK] Python 3.12 encontrado.
-    echo [INFO] Version detectada:
-    py -3.12 --version
 )
 
+echo [INFO] Version detectada: !PY312_VERSION!
+
 echo.
-echo === 2. Creando entorno virtual ===
+echo === 2. Verificando entorno virtual ===
+
+if exist ".venv\Scripts\python.exe" (
+    echo [INFO] Comprobando entorno virtual existente...
+
+    ".venv\Scripts\python.exe" -c "import sys; raise SystemExit(sys.version_info[:2] != (3,12))" >nul 2>&1
+
+    if errorlevel 1 (
+        echo [!] El entorno virtual no funciona o utiliza otra version.
+        echo [INFO] Eliminando entorno virtual anterior...
+        rmdir /s /q ".venv"
+
+        if exist ".venv" (
+            echo.
+            echo [ERROR] No se pudo eliminar el entorno virtual anterior.
+            pause
+            exit /b 1
+        )
+    ) else (
+        echo [OK] Entorno virtual existente y funcional.
+    )
+)
 
 if not exist ".venv\Scripts\python.exe" (
     echo [INFO] Creando entorno virtual .venv...
+
     py -3.12 -m venv .venv
 
     if errorlevel 1 (
@@ -61,8 +99,6 @@ if not exist ".venv\Scripts\python.exe" (
     )
 
     echo [OK] Entorno virtual creado correctamente.
-) else (
-    echo [OK] Ya existe el entorno virtual .venv.
 )
 
 echo.
@@ -80,6 +116,7 @@ if errorlevel 1 (
 echo [OK] Entorno virtual activado.
 echo [INFO] Python que se utilizara:
 python --version
+
 echo [INFO] Ruta del interprete:
 where python
 
@@ -121,7 +158,7 @@ if errorlevel 1 (
 echo [OK] Dependencias instaladas correctamente.
 
 echo.
-echo === 6. Instalando soporte para notebooks de VS Code ===
+echo === 6. Instalando ipykernel en .venv ===
 
 echo [INFO] Instalando ipykernel...
 python -m pip install ipykernel
@@ -133,18 +170,19 @@ if errorlevel 1 (
     exit /b 1
 )
 
+echo [OK] ipykernel instalado dentro de .venv.
+
 echo.
-echo [INFO] Registrando kernel del proyecto...
-python -m ipykernel install --sys-prefix --name g5-ia-aplicada --display-name "Python 3.12 (G5-IA-APLICADA)"
+echo === 7. Verificando entorno ===
+
+python -c "import sys, numpy, pandas, ipykernel; print('Python:', sys.version); print('Interprete:', sys.executable); print('NumPy:', numpy.__version__); print('Pandas:', pandas.__version__); print('ipykernel:', ipykernel.__version__)"
 
 if errorlevel 1 (
     echo.
-    echo [ERROR] No se pudo registrar el kernel.
+    echo [ERROR] Fallo la verificacion del entorno.
     pause
     exit /b 1
 )
-
-echo [OK] Kernel registrado correctamente.
 
 echo.
 echo ==========================================
@@ -154,13 +192,11 @@ echo.
 echo [OK] Python 3.12 disponible.
 echo [OK] Entorno virtual: .venv
 echo [OK] Dependencias instaladas.
-echo [OK] ipykernel instalado.
-echo [OK] Kernel de VS Code registrado.
-echo.
-echo En VS Code selecciona:
-echo Python 3.12 (G5-IA-APLICADA)
+echo [OK] ipykernel instalado en .venv.
+echo [OK] No se registro ningun kernel personalizado.
 echo.
 echo El entorno virtual permanece activado.
 echo.
 
 cmd /k
+```
