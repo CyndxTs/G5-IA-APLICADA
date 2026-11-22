@@ -1,0 +1,45 @@
+﻿columna,uso,grupo,descripcion,regla_para_faltantes,transformacion,roc_auc_entrenamiento,sentido,min,max
+id_proveedor,ID,Identificación,RUC del proveedor (persona natural o jurídica).,no tiene faltantes,ninguna,,,,
+fecha_corte,ID,Identificación,Fecha de corte: las variables usan solo información hasta esta fecha.,no tiene faltantes,ninguna,,,,
+target,Target,Target,1 si recibe una inhabilitación o multa en los 12 meses siguientes al corte.,no tiene faltantes,ninguna,,,0,1
+y_inhabilitacion_12m,Target (componente),Target,1 si recibe una inhabilitación en la ventana. No usar como predictora.,no tiene faltantes,ninguna,,,0,1
+y_multa_12m,Target (componente),Target,1 si recibe una multa en la ventana. No usar como predictora.,no tiene faltantes,ninguna,,,0,1
+persona_juridica,Predictora,Perfil,"1 si el RUC es de persona jurídica (20...), 0 si es persona natural (10...).",no tiene faltantes,ninguna,0.6022,"más alto, más riesgo",0,1
+meses_desde_ultima_buena_pro,Predictora,Actividad,Meses desde la última buena pro (como máximo 24).,no tiene faltantes,ninguna,0.5544,"más alto, menos riesgo",0.0,23.983572895277206
+log_n_items_ganados_24m,Predictora,Actividad,Ítems ganados en los últimos 24 meses.,no tiene faltantes,log1p,0.6431,"más alto, más riesgo",0.6931471805599453,7.060476365999801
+log_monto_adjudicado_24m,Predictora,Montos,Monto adjudicado en soles en los últimos 24 meses.,no tiene faltantes,log1p,0.6869,"más alto, más riesgo",0.0,21.588763607031048
+log_monto_adjudicado_6m,Predictora,Montos,Monto adjudicado en los últimos 6 meses.,0 si no ganó,log1p,0.5913,"más alto, más riesgo",0.0,21.588763607031048
+log_n_items_ganados_12m,Predictora,Actividad,Ítems ganados en los últimos 12 meses.,0 si no ganó,log1p,0.6191,"más alto, más riesgo",0.0,6.46302945692067
+log_monto_adjudicado_12m,Predictora,Montos,Monto adjudicado en los últimos 12 meses.,0 si no ganó,log1p,0.6447,"más alto, más riesgo",0.0,21.588763607031048
+log_monto_adjudicado_medio,Predictora,Montos,Monto adjudicado promedio por ítem.,no tiene faltantes,log1p,0.6447,"más alto, más riesgo",0.0,21.588763607031048
+log_n_entidades,Predictora,Diversificación,Entidades distintas con las que ganó.,no tiene faltantes,log1p,0.6525,"más alto, más riesgo",0.6931471805599453,5.438079308923196
+log_n_departamentos,Predictora,Diversificación,Departamentos distintos de los ítems ganados.,no tiene faltantes,log1p,0.6342,"más alto, más riesgo",0.6931471805599453,3.258096538021482
+log_n_sectores,Predictora,Diversificación,Sectores o niveles de gobierno distintos.,no tiene faltantes,log1p,0.6404,"más alto, más riesgo",0.6931471805599453,3.2188758248682006
+log_n_entidades_recurrentes,Predictora,Concentración,Entidades con las que ganó 2 o más ítems.,no tiene faltantes,log1p,0.5649,"más alto, más riesgo",0.0,5.075173815233827
+prop_obj_obra,Predictora,Composición,Proporción de ítems ganados de objeto obra.,no tiene faltantes,ninguna,0.5252,"más alto, más riesgo",0.0,1.0
+prop_obj_servicio,Predictora,Composición,Proporción de ítems ganados de objeto servicio.,no tiene faltantes,ninguna,0.5322,"más alto, menos riesgo",0.0,1.0
+prop_proc_adj_simplificada,Predictora,Composición,Proporción de ítems ganados por adjudicación simplificada.,no tiene faltantes,ninguna,0.5667,"más alto, más riesgo",0.0,1.0
+prop_proc_comparacion_precios,Predictora,Composición,Proporción de ítems ganados por comparación de precios.,no tiene faltantes,ninguna,0.5234,"más alto, menos riesgo",0.0,1.0
+prop_proc_concurso,Predictora,Composición,Proporción de ítems ganados por concurso público.,no tiene faltantes,ninguna,0.558,"más alto, más riesgo",0.0,1.0
+prop_proc_licitacion,Predictora,Composición,Proporción de ítems ganados por licitación pública.,no tiene faltantes,ninguna,0.5243,"más alto, más riesgo",0.0,1.0
+prop_proc_otros_procesos,Predictora,Composición,Proporción de ítems ganados por otros.,no tiene faltantes,ninguna,0.5348,"más alto, menos riesgo",0.0,1.0
+prop_ent_empresa_estatal,Predictora,Composición,"Proporción de ítems de empresas estatales (FONAFE, Petroperú).",no tiene faltantes,ninguna,0.5387,"más alto, más riesgo",0.0,1.0
+prop_ent_gob_local,Predictora,Composición,Proporción de ítems de gobiernos locales.,no tiene faltantes,ninguna,0.5223,"más alto, menos riesgo",0.0,1.0
+prop_ent_gob_nacional,Predictora,Composición,Proporción de ítems del gobierno nacional.,no tiene faltantes,ninguna,0.5398,"más alto, más riesgo",0.0,1.0
+prop_ent_gob_regional,Predictora,Composición,Proporción de ítems de gobiernos regionales.,no tiene faltantes,ninguna,0.534,"más alto, más riesgo",0.0,1.0
+prop_items_lima_callao,Predictora,Composición,Proporción de ítems en Lima o Callao.,no tiene faltantes,ninguna,0.5232,"más alto, más riesgo",0.0,1.0
+ratio_adjudicado_referencial,Predictora,Precio,"Monto adjudicado / referencial, promedio por ítem (recortado en 0-2).",1 (sin descuento) si ningún ítem tiene referencial,ninguna,0.6377,"más alto, menos riesgo",0.0,2.0
+prop_items_bajo_80pct_referencial,Predictora,Precio,Proporción de ítems ganados por debajo del 80% del referencial.,0 si ningún ítem tiene referencial,ninguna,0.5938,"más alto, más riesgo",0.0,1.0
+log_postores_promedio_items_ganados,Predictora,Competencia,Postores promedio en los ítems que ganó.,ítem sin lista de postores = 1 postor,log1p,0.6535,"más alto, más riesgo",0.6931471805599453,4.465908118654584
+prop_items_ganados_sin_competencia,Predictora,Competencia,Proporción de ítems ganados con un solo postor.,ítem sin lista de postores = 1 postor,ninguna,0.5736,"más alto, menos riesgo",0.0,1.0
+log_n_ofertas_24m,Predictora,Participación,Ofertas presentadas en los últimos 24 meses.,0 si no presentó,log1p,0.7319,"más alto, más riesgo",0.0,7.842278779117352
+log_n_ofertas_12m,Predictora,Participación,Ofertas presentadas en los últimos 12 meses.,0 si no presentó,log1p,0.7055,"más alto, más riesgo",0.0,7.259819610363186
+tasa_exito,Predictora,Participación,Ítems ganados / ofertas presentadas (últimos 24 meses).,"si ganó más de lo que ofertó (procesos sin postores), ofertas = ganados",ninguna,0.7138,"más alto, menos riesgo",0.00202020202020202,1.0
+log_n_penalidades,Predictora,Ejecución,Penalidades aplicadas por las entidades hasta el corte.,0 si no tiene,log1p,0.5751,"más alto, más riesgo",0.0,5.3612921657094255
+log_n_penalidades_12m,Predictora,Ejecución,Penalidades en los últimos 12 meses.,0 si no tiene,log1p,0.5466,"más alto, más riesgo",0.0,4.382026634673881
+log_n_penalidades_mora,Predictora,Ejecución,Penalidades por mora (retraso).,0 si no tiene,log1p,0.5446,"más alto, más riesgo",0.0,5.003946305945459
+log_n_inhabilitaciones_previas,Predictora,Antecedentes,Inhabilitaciones con fecha anterior o igual al corte.,0 si no tiene,log1p,0.5354,"más alto, más riesgo",0.0,3.912023005428146
+log_n_multas_previas,Predictora,Antecedentes,Multas con fecha anterior o igual al corte.,0 si no tiene,log1p,0.5466,"más alto, más riesgo",0.0,2.1972245773362196
+log_n_sanciones_previas_12m,Predictora,Antecedentes,Sanciones en los últimos 12 meses.,0 si no tiene,log1p,0.5453,"más alto, más riesgo",0.0,3.8918202981106265
+log_n_previas_fraude_documental,Predictora,Antecedentes,Sanciones previas por información inexacta o documentos falsos.,0 si no tiene,log1p,0.5218,"más alto, más riesgo",0.0,1.791759469228055
+log_dias_desde_ultima_sancion,Predictora,Antecedentes,Días desde la última sanción.,1826 (tope: nunca o hace más de 5 años),log1p,0.5744,"más alto, menos riesgo",0.0,7.510430556378006

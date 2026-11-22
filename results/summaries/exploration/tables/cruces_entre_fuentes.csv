@@ -1,0 +1,12 @@
+﻿desde,hacia,llave,% con pareja
+convocatoria-ítem,adjudicación,codigoconvocatoria + n_item,100.0
+adjudicación,ofertantes,codigoconvocatoria + n_item,99.4
+adjudicación,contrato,codigoconvocatoria + n_item / num_item,9.41
+contrato-ítem,adjudicación,codigoconvocatoria + num_item / n_item,100.0
+ampliación,contrato,codigocontrato = n_cod_contrato,57.38
+arbitraje,contrato,n_cod_contrato,96.2
+penalidad,contrato,id_contrato = n_cod_contrato,20.36
+penalidad,proveedor adjudicado,ruc_contratista = ruc_proveedor,86.55
+adjudicación,entidad,codigoentidad (sin ceros),99.77
+proveedor adjudicado (RUC),alguna sanción,RUC,6.13
+proveedor adjudicado (RUC),alguna penalidad,RUC,5.0

@@ -1,0 +1,8 @@
+﻿fecha_corte,etapa,proveedores,positivos,prevalencia_%,positivos_inhabilitacion,positivos_multa,con_sancion_previa,con_penalidad_previa,items_ganados_24m_mediana
+2022-06-30,entrenamiento,10687,265,2.48,128,140,1.4,3.4,1.0
+2022-12-31,entrenamiento,19711,503,2.55,219,300,2.1,3.6,1.0
+2023-06-30,entrenamiento,24489,508,2.07,262,275,3.1,3.8,1.0
+2023-12-31,entrenamiento,31206,561,1.8,332,252,3.7,4.0,1.0
+2024-06-30,entrenamiento,31677,536,1.69,310,237,4.1,4.6,1.0
+2024-12-31,validación,31200,594,1.9,346,259,4.3,5.3,1.0
+2025-06-30,prueba,32738,795,2.43,444,381,4.5,5.4,1.0

@@ -6,8 +6,11 @@ repositorio:
 
     python src/exploration.py
 
-En ambos casos los gráficos se guardan (y se sobrescriben) en ``results/eda/``,
-organizados en una carpeta por fuente.
+En ambos casos se reemplazan las salidas anteriores:
+- ``results/plots/exploration/``: gráficos, en una carpeta por fuente.
+- ``results/summaries/exploration/``: ``resumen.md`` con los hallazgos y decisiones, y la
+  carpeta ``tables/`` con las tablas que muestra el resumen (fuentes, diccionario de
+  datos raw, cruces entre fuentes y tasa de sanción por grupo).
 
 Los archivos se leen por carpeta, sin depender de su nombre exacto: se toman
 todos los ``.xlsx`` (o ``.csv`` / ``.xls``) de cada carpeta de ``data/raw/`` y el
@@ -15,6 +18,7 @@ año se obtiene del nombre del archivo cuando está presente.
 """
 
 import re
+import shutil
 from pathlib import Path
 
 import numpy as np
@@ -28,7 +32,8 @@ from lxml import html as lxml_html
 # ----------------------------------------------------------------------------
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"
-EDA_DIR = ROOT / "results" / "eda"
+PLOTS_DIR = ROOT / "results" / "plots" / "exploration"
+SUMMARY_DIR = ROOT / "results" / "summaries" / "exploration"
 
 COLOR_PRIMARIO = "#1f77b4"
 COLOR_SECUNDARIO = "#ff7f0e"
@@ -59,9 +64,17 @@ ETIQUETA_CONSORCIO = "código de 5-8 dígitos (consorcio)"
 ETIQUETA_EXTRANJERO = "código L... (no domiciliado)"
 
 
+def limpiar_salidas():
+    """Borra los gráficos y el resumen anteriores para que no queden versiones viejas."""
+    for carpeta in (PLOTS_DIR, SUMMARY_DIR):
+        if carpeta.exists():
+            shutil.rmtree(carpeta)
+        carpeta.mkdir(parents=True, exist_ok=True)
+
+
 def guardar_figura(fig, clave):
-    """Guarda la figura en results/eda/ con el nombre definido en FIGURAS."""
-    ruta = EDA_DIR / FIGURAS[clave]
+    """Guarda la figura en results/plots/exploration/ con el nombre definido en FIGURAS."""
+    ruta = PLOTS_DIR / FIGURAS[clave]
     ruta.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(ruta, dpi=150, bbox_inches="tight")
     return ruta
@@ -853,12 +866,219 @@ def graficar_tiempo_hasta_sancion(base, horizonte_meses=12):
     return fig
 
 
+
+# ----------------------------------------------------------------------------
+# 11. Resumen en Markdown
+# ----------------------------------------------------------------------------
+TITULOS_FIGURAS = {
+    "conv_categoricas": "Convocatorias: variables categóricas principales",
+    "conv_montos_fechas": "Convocatorias: montos referenciales e ítems por mes",
+    "adj_tipo_montos": "Adjudicaciones: tipo de proveedor y montos",
+    "adj_fechas": "Adjudicaciones: buenas pro por trimestre y año de archivo",
+    "ofertantes": "Ofertantes: competencia y participación",
+    "contratos_cobertura": "Contratos: cobertura por tipo de proceso",
+    "contratos_fechas": "Contratos: firmas por trimestre y días desde la buena pro",
+    "penalidades": "Penalidades por año, tipo y monto",
+    "ampliaciones_arbitraje": "Ampliaciones y arbitrajes por año",
+    "rnp": "RNP: tipo, estado y monto de multas",
+    "sanciones_anio_motivo": "Sanciones por año y motivo",
+    "tasas_grupo": "Tasa de sanción a 12 meses por grupo",
+    "tiempo_sancion": "Tiempo hasta la siguiente sanción",
+}
+
+DECISIONES_EDA = [
+    ("Todas", "Un archivo por año con las mismas columnas; encabezados en mayúscula", "Leer por carpeta sin depender del nombre y normalizar encabezados"),
+    ("Adjudicaciones", "Cubre el 100% de los ítems convocados, con RUC y tipo del ganador, monto en soles y fecha de buena pro", "Es la base del historial del proveedor; fecha de disponibilidad = buena pro"),
+    ("Adjudicaciones", "Consorcios con código corto y no domiciliados con código `L...`, sin RUC", "Excluirlos: no podemos observar sus sanciones; trabajamos con personas naturales y jurídicas"),
+    ("Adjudicaciones", "El tipo de proveedor separa persona natural y jurídica", "Variable: persona jurídica (sí/no)"),
+    ("Convocatorias", "~40 tipos de proceso con variantes; sector y sistema de contratación", "Agrupar en familias de proceso; proporciones por familia, tipo de entidad y sector"),
+    ("Convocatorias", "Montos muy asimétricos", "`log1p` en los montos"),
+    ("Ofertantes", "99% de cobertura; muchos ítems con un solo postor; participación muy desigual", "Variables de competencia (postores por ítem ganado) y de participación (ofertas, tasa de éxito); fecha = presentación de la propuesta (convocatoria si es imposible)"),
+    ("Contratos", "Solo ~9% de lo adjudicado; una fila por modificación; modificaciones sin fecha", "Solo como complemento (duración, ampliaciones); no usar adicionales, reducciones ni prórrogas"),
+    ("Penalidades", "Con fecha y RUC; líneas mal formadas, coma decimal y duplicados", "Leer línea por línea, quitar duplicados; antecedentes de penalidades antes del corte"),
+    ("Ampliaciones", "Con fecha pero sin RUC; solo llegan al proveedor por contrato", "Evaluar si aportan; cobertura limitada"),
+    ("Arbitraje", "Solo ~600 registros", "No usar como variable"),
+    ("Entidades", "El código cruza solo sin ceros a la izquierda", "Normalizar el código; aporta poco frente a adjudicaciones"),
+    ("Sanciones", "El RNP contiene casi todo CONOSCE; multas solo en el RNP", "Unir por (RUC, resolución, tipo) dando prioridad al RNP"),
+    ("Sanciones", "Solo sanciones que terminaron en los últimos ~5 años", "Target completo desde 2022; antecedentes subestimados en los primeros cortes"),
+    ("Sanciones", "Fecha de extracción oct-2026", "Cortes semestrales desde 2022 hasta el último con ventana de 12 meses completa"),
+    ("Sanciones", "Motivos en texto libre; composición cambia por año", "Agrupar motivos; la prevalencia cambiará entre cortes"),
+]
+
+
+# Columnas raw que usa el preprocesamiento y para qué (el resto no se usa)
+COLUMNAS_USADAS = {
+    "convocatorias": {"codigoconvocatoria": "llave del ítem", "n_item": "llave del ítem",
+                      "sector / nivel de gobierno": "sector de la entidad"},
+    "adjudicaciones": {"codigoconvocatoria": "llave del ítem", "n_item": "llave del ítem",
+                       "ruc proveedor": "identificador del proveedor", "tipo_proveedor": "población y tipo de contribuyente",
+                       "fecha_buenapro": "fecha en que se conoce el ítem", "codigoentidad": "diversificación por entidad",
+                       "tipoentidad": "composición por tipo de entidad", "objetocontractual": "composición por objeto",
+                       "tipoprocesoseleccion": "familia de proceso", "monto_adjudicado_item_soles": "montos",
+                       "monto_referencial_item_soles": "ratio adjudicado / referencial",
+                       "departamento_item": "diversificación por departamento",
+                       "entidad_departamento": "departamento si falta el del ítem"},
+    "ofertantes": {"codigo_convocatoria": "llave del ítem", "n_item": "llave del ítem",
+                   "ruc_codigo_postor": "identificador del postor", "fecha_presentacion_propuesta": "fecha de la oferta",
+                   "fechaconvocatoria": "fecha de la oferta si la propuesta tiene fecha imposible"},
+    "contratos": {"n_cod_contrato": "llave del contrato (para ampliaciones)", "num_item": "llave del contrato-ítem",
+                  "ruc_contratista": "proveedor del contrato", "ruc_destinatario_pago": "identifica consorcios"},
+    "ampliaciones": {"codigocontrato": "llave del contrato", "fecha_publicacion_ampliacion": "fecha de la ampliación",
+                     "numero_documento": "quitar duplicados"},
+    "penalidades": {"ruc_contratista": "identificador del proveedor", "fecha_penalidad": "fecha de la penalidad",
+                    "tipo_penalidad": "penalidades por mora", "monto": "monto de penalidades"},
+    "sancionados": {"RUC": "identificador del proveedor", "NUMERO_RESOLUCION": "unir con el RNP sin repetir",
+                    "FECHA_INICIO": "fecha del evento", "FECHA_FIN": "vigencia e inhabilitación indefinida",
+                    "DE_MOTIVO_INFRACCION": "grupo de motivo"},
+    "rnp (inhabilitaciones)": {"ruc": "identificador del proveedor", "resolucion": "unir con CONOSCE sin repetir",
+                               "desde": "fecha del evento", "hasta": "vigencia e inhabilitación indefinida",
+                               "infraccion": "grupo de motivo"},
+    "rnp (multas)": {"ruc": "identificador del proveedor", "resolucion": "llave de la multa",
+                     "fecha_resolucion": "fecha del evento", "infraccion": "grupo de motivo"},
+}
+COLUMNAS_DERIVADAS = {"archivo", "anio_archivo", "inicio", "fin", "desde_dt", "hasta_dt", "fecha_resolucion_dt"}
+
+
+def diccionario_datos_raw(tablas_raw):
+    """Una fila por columna de cada fuente raw: tipo, nulos, valores distintos, ejemplo y uso.
+
+    ``tablas_raw``: {nombre de la fuente: DataFrame tal como se leyó}.
+    """
+    partes = []
+    for fuente, df in tablas_raw.items():
+        perfil = perfil_columnas(df, excluir=COLUMNAS_DERIVADAS).drop(columns="tipo").reset_index()
+        usadas = COLUMNAS_USADAS.get(fuente, {})
+        perfil.insert(0, "fuente", fuente)
+        perfil["se_usa"] = np.where(perfil["columna"].isin(usadas), "sí", "no")
+        perfil["uso_en_el_preprocesamiento"] = perfil["columna"].map(usadas).fillna("")
+        partes.append(perfil)
+    return pd.concat(partes, ignore_index=True)
+
+
+TABLAS = {
+    "fuentes": "tables/fuentes.csv",
+    "diccionario": "tables/diccionario_de_datos_raw.csv",
+    "cruces": "tables/cruces_entre_fuentes.csv",
+    "tasas": "tables/tasa_de_sancion_por_grupo.csv",
+}
+
+
+def tabla_decisiones_md():
+    filas = ["| Fuente | Hallazgo | Qué hacemos en `02_preprocesamiento` |", "|---|---|---|"]
+    return "\n".join(filas + [f"| {a} | {b} | {c} |" for a, b, c in DECISIONES_EDA])
+
+
+def _md(df, index=False, decimales=2):
+    df = df.reset_index() if index else df
+    df = df.apply(lambda col: col.round(decimales) if col.dtype.kind == "f" else col)
+    df = df.astype(str).apply(lambda col: col.str.replace("|", "\\|", regex=False).str.replace("\n", " ", regex=False))
+    lineas = ["| " + " | ".join(map(str, df.columns)) + " |", "|" + "---|" * df.shape[1]]
+    return "\n".join(lineas + ["| " + " | ".join(map(str, fila)) + " |" for fila in df.to_numpy()])
+
+
+def escribir_resumen(r):
+    """Escribe results/summaries/exploration/resumen.md y sus tablas a partir de los resultados del EDA.
+
+    ``r`` es un diccionario con los objetos calculados en el notebook (o en ``main``).
+    """
+    inv = r["inventario"].groupby("carpeta").agg(archivos=("archivo", "size"), tamaño_MB=("tamaño_MB", "sum"))
+    filas = r["tabla_archivos"].groupby("carpeta")["filas"].sum()
+    filas = pd.concat([filas, pd.Series(r["filas_otras"])])
+    inv["filas"] = filas.reindex(inv.index).fillna(0).astype(int)
+    inv["tamaño_MB"] = inv["tamaño_MB"].round(1)
+    est_adj, res_of, res_pen, res_amp = r["est_adj"], r["res_of"], r["res_pen"], r["res_amp"]
+    postores = res_of["postores"]
+    tasas = pd.concat({col: t.assign(tasa=lambda d: (d["tasa"] * 100).round(2)) for col, t in r["tasas"].items()})
+    tasas.index.names = ["grupo", "categoría"]
+    tasas = tasas.rename(columns={"tasa": "% sancionado en 12 meses"})
+    por_tipo = r["consorcios_por_tipo"].assign(pct_sancionado=lambda d: (d["pct_sancionado"] * 100).round(2))
+    eventos = r["eventos"]
+    fechas = r["fechas_fuentes"]
+    dic = r["diccionario_raw"]
+    dic_resumen = dic.groupby("fuente", sort=False).agg(columnas=("columna", "size"),
+                                                         usadas=("se_usa", lambda s: int((s == "sí").sum())))
+    enlace = lambda clave: f"Tabla: [`{TABLAS[clave]}`]({TABLAS[clave]})"
+    for clave, (tabla, con_indice) in {"fuentes": (inv, True), "diccionario": (dic, False),
+                                       "cruces": (r["cruces"], False), "tasas": (tasas, True)}.items():
+        ruta_tabla = SUMMARY_DIR / TABLAS[clave]
+        ruta_tabla.parent.mkdir(parents=True, exist_ok=True)
+        tabla.to_csv(ruta_tabla, index=con_indice, encoding="utf-8-sig")
+    texto = f"""# Resumen del análisis exploratorio
+
+Generado automáticamente por `src/exploration.py` (o por `notebooks/01_eda.ipynb`). Se reemplaza en cada ejecución.
+
+## Fuentes
+
+{_md(inv, index=True)}
+
+{enlace("fuentes")}
+
+## Diccionario de datos raw
+
+Columnas de cada fuente tal como se leen (encabezados en minúscula en las fuentes del SEACE) y cuáles usa el preprocesamiento:
+
+{_md(dic_resumen, index=True)}
+
+<details>
+<summary>Ver diccionario completo ({len(dic)} columnas)</summary>
+
+{_md(dic)}
+
+</details>
+
+{enlace("diccionario")}
+
+## Hallazgos por fuente
+
+- Convocatorias: {r['n_convocatorias']:,} ítems de convocatoria (2022-2026), todos adjudicados; {r['n_tipos_proceso']} tipos de proceso con variantes.
+- Adjudicaciones: {est_adj['items']:,} ítems con su ganador; cubren el 100% de las convocatorias. Ganadores: {', '.join(f'{k} {v / est_adj["filas"] * 100:.0f}%' for k, v in est_adj['tipo_proveedor'].items())}.
+- Ofertantes: {len(r['ofertantes']):,} ofertas; el {res_of['pct_items_adj_con_postores']:.1f}% de los ítems adjudicados tiene postores y el ganador figura entre ellos en el {res_of['pct_ganador_entre_postores']:.1f}%. El {(postores == 1).mean() * 100:.0f}% de los ítems tuvo un solo postor.
+- Contratos: solo el {r['pct_items_con_contrato']:.1f}% de los ítems adjudicados tiene contrato en el archivo; cada fila extra de un contrato es una modificación sin fecha.
+- Penalidades: {res_pen['filas']:,} registros con fecha y RUC ({res_pen['duplicadas']} duplicados, {r['lineas_reparadas']} líneas mal formadas reparadas).
+- Ampliaciones: {res_amp['filas']:,} registros con fecha pero sin RUC; solo el {res_amp['pct_en_contratos']:.0f}% corresponde a contratos del archivo.
+- Arbitraje: solo {r['n_arbitrajes']} registros; no se usa.
+- Sanciones: {len(eventos):,} eventos únicos ({(eventos['tipo'] == 'inhabilitación').sum():,} inhabilitaciones y {(eventos['tipo'] == 'multa').sum():,} multas) al unir RNP y CONOSCE. Las listas solo incluyen sanciones que terminaron después del {fechas.loc['RNP', 'fecha de fin más antigua'].date()} (consulta de los últimos 5 años del RNP). Fecha de extracción más temprana: {fechas['fecha de extracción'].min().date()}.
+
+## Cruces entre fuentes
+
+{_md(r['cruces'])}
+
+{enlace("cruces")}
+
+## Consorcios y no domiciliados
+
+Solo tienen código, no RUC, así que no aparecen en las listas de sanciones:
+
+{_md(por_tipo, index=True)}
+
+## Primer vistazo al objetivo
+
+Ítems adjudicados a personas naturales y jurídicas con la ventana de 12 meses completa: {len(r['base_objetivo']):,}. Tasa de sanción del proveedor en los 12 meses siguientes a la buena pro: {r['base_objetivo']['sancion_12m'].mean() * 100:.2f}%.
+
+{_md(tasas, index=True)}
+
+{enlace("tasas")}
+
+## Decisiones para el preprocesamiento
+
+{tabla_decisiones_md()}
+
+## Gráficos
+
+""" + "\n\n".join(f"### {titulo}\n\n![{titulo}](../../plots/exploration/{FIGURAS[clave]})"
+                  for clave, titulo in TITULOS_FIGURAS.items()) + "\n"
+    ruta = SUMMARY_DIR / "resumen.md"
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    ruta.write_text(texto, encoding="utf-8")
+    return ruta
+
 # ----------------------------------------------------------------------------
 # Ejecución completa
 # ----------------------------------------------------------------------------
 def main():
-    """Ejecuta todo el EDA, imprime los resúmenes y guarda los gráficos en results/eda/."""
+    """Ejecuta todo el EDA, imprime los resúmenes y guarda gráficos y resumen en results/."""
     plt.switch_backend("Agg")
+    limpiar_salidas()
     pd.set_option("display.width", 200)
     pd.set_option("display.max_columns", 40)
 
@@ -866,10 +1086,12 @@ def main():
         print("\n" + "=" * 80 + f"\n{t}\n" + "=" * 80)
 
     titulo("1. Inventario de archivos")
-    print(inventario_archivos().to_string(index=False))
+    inventario = inventario_archivos()
+    print(inventario.to_string(index=False))
     fuentes = {c: leer_anuales(c) for c in ["convocatorias", "adjudicaciones", "ofertantes", "contratos",
                                             "ampliaciones", "arbitraje"]}
-    print(tabla_archivos(fuentes).to_string(index=False))
+    archivos = tabla_archivos(fuentes)
+    print(archivos.to_string(index=False))
 
     titulo("2. Convocatorias")
     conv = preparar_convocatorias(fuentes["convocatorias"][0])
@@ -909,9 +1131,11 @@ def main():
     amp = preparar_ampliaciones(fuentes["ampliaciones"][0])
     arb = preparar_arbitraje(fuentes["arbitraje"][0])
     pen, _, reparadas = leer_penalidades()
-    print({k: v for k, v in resumen_ampliaciones(amp, contratos).items() if np.isscalar(v)})
+    res_amp = resumen_ampliaciones(amp, contratos)
+    res_pen = resumen_penalidades(pen, contratos, adj)
+    print({k: v for k, v in res_amp.items() if np.isscalar(v)})
     print(f"Arbitrajes: {len(arb):,} | penalidades: {len(pen):,} (líneas reparadas: {reparadas})")
-    print({k: v for k, v in resumen_penalidades(pen, contratos, adj).items() if np.isscalar(v)})
+    print({k: v for k, v in res_pen.items() if np.isscalar(v)})
     plt.close(graficar_penalidades(pen))
     plt.close(graficar_ampliaciones_arbitraje(amp, arb))
 
@@ -932,7 +1156,8 @@ def main():
     plt.close(graficar_sanciones_anio_motivo(eventos))
 
     titulo("9. Relación entre fuentes")
-    print(tabla_cruces(conv, adj, of, items, amp, arb, pen, entidades, eventos).to_string(index=False))
+    cruces = tabla_cruces(conv, adj, of, items, amp, arb, pen, entidades, eventos)
+    print(cruces.to_string(index=False))
     por_tipo, por_pago, _ = analisis_consorcios(adj, items, eventos)
     print(por_tipo.round(3).to_string())
     print(por_pago.round(3).to_string())
@@ -947,9 +1172,22 @@ def main():
     plt.close(graficar_tasas_por_grupo(base, tasas))
     plt.close(graficar_tiempo_hasta_sancion(base))
 
-    print(f"\nGráficos guardados en: {EDA_DIR}")
+    ruta = escribir_resumen({
+        "inventario": inventario, "tabla_archivos": archivos, "n_convocatorias": len(conv),
+        "n_tipos_proceso": conv["tipoprocesoseleccion"].nunique(), "est_adj": est_adj, "res_of": res_of,
+        "ofertantes": of, "pct_items_con_contrato": tiene.mean() * 100, "res_pen": res_pen, "res_amp": res_amp,
+        "lineas_reparadas": reparadas, "n_arbitrajes": len(arb), "eventos": eventos, "fechas_fuentes": fechas_fuentes,
+        "cruces": cruces, "consorcios_por_tipo": por_tipo, "base_objetivo": base, "tasas": tasas,
+        "filas_otras": {"penalidades": len(pen), "sancionados": len(sanc_inh), "rnp": len(rnp_inh) + len(rnp_mul),
+                        "entidades_contratantes": len(entidades)},
+        "diccionario_raw": diccionario_datos_raw({
+            **{c: fuentes[c][0] for c in fuentes}, "penalidades": pen, "sancionados": sanc_inh,
+            "rnp (inhabilitaciones)": rnp_inh, "rnp (multas)": rnp_mul, "entidades_contratantes": entidades}),
+    })
+    print(f"\nGráficos guardados en: {PLOTS_DIR.relative_to(ROOT)}")
     for nombre in FIGURAS.values():
         print("  -", nombre)
+    print(f"Resumen: {ruta.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,32 @@
+﻿grupo,categoría,items,% sancionado en 12 meses
+tipo_proveedor,Persona Juridica,152383,4.55
+tipo_proveedor,Persona Natural,38344,1.62
+familia_proceso,Adjudicación simplificada,84431,3.4
+familia_proceso,Comparación de precios,16247,1.42
+familia_proceso,Concurso público,10825,6.75
+familia_proceso,Contratación directa,17731,2.78
+familia_proceso,Licitación pública,14684,3.47
+familia_proceso,Otros,15122,1.72
+familia_proceso,Subasta inversa,31687,7.77
+tipoentidad,FONAFE,12816,5.13
+tipoentidad,GOBIERNO LOCAL,69133,3.52
+tipoentidad,GOBIERNO NACIONAL,65228,4.38
+tipoentidad,GOBIERNO REGIONAL,41015,3.82
+tipoentidad,PETROPERU,2535,1.74
+objetocontractual,Bien,113376,4.29
+objetocontractual,Consultoría de Obra,5606,4.66
+objetocontractual,Obra,6083,3.68
+objetocontractual,Servicio,65662,3.36
+quintil_monto,Q1 (menor),38146,3.19
+quintil_monto,Q2,38145,3.34
+quintil_monto,Q3,38145,3.89
+quintil_monto,Q4,38145,4.42
+quintil_monto,Q5 (mayor),38146,4.97
+competencia,1 postor,66269,2.49
+competencia,2 postores,32377,3.54
+competencia,3-4 postores,51133,3.67
+competencia,5+ postores,40422,7.09
+antecedentes_sancion,con sanción previa,9707,13.71
+antecedentes_sancion,sin sanción previa,181020,3.44
+antecedentes_penalidad,con penalidad previa,25366,12.4
+antecedentes_penalidad,sin penalidad previa,165361,2.67

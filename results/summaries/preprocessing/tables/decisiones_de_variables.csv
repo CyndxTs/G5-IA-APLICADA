@@ -1,0 +1,61 @@
+﻿variable,grupo,%_nulos,%_valor_dominante,roc_auc,sentido,pr_auc_sobre_azar,decision,motivo,correlacion_max_con,psi_max_entre_cortes
+persona_juridica,Perfil,0.0,64.71,0.6022,"más alto, más riesgo",1.26,se queda,tiene señal y no es redundante,monto_adjudicado_24m (0.40),0.0
+meses_desde_ultima_buena_pro,Actividad,0.0,1.12,0.5544,"más alto, menos riesgo",1.19,se queda,tiene señal y no es redundante,n_items_ganados_6m (-0.85),4.806
+n_items_ganados_24m,Actividad,0.0,56.51,0.6431,"más alto, más riesgo",1.88,se queda,tiene señal y no es redundante,n_entidades_recurrentes (0.82),0.1
+monto_adjudicado_24m,Montos,0.0,0.78,0.6869,"más alto, más riesgo",2.21,se queda,tiene señal y no es redundante,monto_adjudicado_max (0.95),0.111
+n_items_ganados_6m,Actividad,0.0,49.43,0.5777,"más alto, más riesgo",1.51,sale,redundante con monto_adjudicado_6m (rho = 0.95),monto_adjudicado_6m (0.95),6.16
+monto_adjudicado_6m,Montos,0.0,49.44,0.5913,"más alto, más riesgo",1.72,se queda,tiene señal y no es redundante,n_items_ganados_6m (0.95),0.668
+n_items_ganados_12m,Actividad,0.0,46.62,0.6191,"más alto, más riesgo",1.76,se queda,tiene señal y no es redundante,meses_activos_12m (0.96),2.973
+monto_adjudicado_12m,Montos,0.0,23.11,0.6447,"más alto, más riesgo",2.04,se queda,tiene señal y no es redundante,n_items_ganados_12m (0.84),0.374
+monto_adjudicado_medio,Montos,0.0,0.76,0.6447,"más alto, más riesgo",1.74,se queda,tiene señal y no es redundante,monto_adjudicado_max (0.97),0.068
+monto_adjudicado_max,Montos,0.0,0.85,0.6687,"más alto, más riesgo",2.06,sale,redundante con monto_adjudicado_24m (rho = 0.95),monto_adjudicado_medio (0.97),0.078
+prop_items_ultimos_6m,Actividad,0.0,49.43,0.5135,"más alto, más riesgo",0.96,sale,sin poder predictivo (ROC-AUC < 0.52),n_items_ganados_6m (0.87),6.894
+meses_activos_12m,Actividad,0.0,51.74,0.6159,"más alto, más riesgo",1.65,sale,redundante con n_items_ganados_12m (rho = 0.96),n_items_ganados_12m (0.96),3.017
+n_entidades,Diversificación,0.0,72.24,0.6525,"más alto, más riesgo",2.03,se queda,tiene señal y no es redundante,prop_items_entidad_principal (-0.99),0.059
+n_departamentos,Diversificación,0.0,84.41,0.6342,"más alto, más riesgo",1.96,se queda,tiene señal y no es redundante,n_entidades (0.65),0.037
+n_sectores,Diversificación,0.0,82.5,0.6404,"más alto, más riesgo",2.16,se queda,tiene señal y no es redundante,n_entidades (0.77),0.052
+prop_items_entidad_principal,Concentración,0.0,72.24,0.6504,"más alto, menos riesgo",1.99,sale,redundante con n_entidades (rho = -0.99),n_entidades (-0.99),0.032
+prop_monto_entidad_principal,Concentración,0.0,72.26,0.6443,"más alto, menos riesgo",1.79,sale,redundante con n_entidades (rho = -0.99),n_entidades (-0.99),0.039
+n_entidades_recurrentes,Concentración,0.0,68.6,0.5649,"más alto, más riesgo",1.38,se queda,tiene señal y no es redundante,n_items_ganados_24m (0.82),0.057
+prop_obj_bien,Composición,0.0,53.8,0.5067,"más alto, menos riesgo",1.0,sale,sin poder predictivo (ROC-AUC < 0.52),prop_obj_servicio (-0.84),0.0
+prop_obj_consultoria_obra,Composición,0.0,96.25,0.519,"más alto, más riesgo",1.07,sale,sin poder predictivo (ROC-AUC < 0.52),prop_obj_bien (-0.18),0.0
+prop_obj_obra,Composición,0.0,94.17,0.5252,"más alto, más riesgo",1.09,se queda,tiene señal y no es redundante,monto_adjudicado_medio (0.31),0.0
+prop_obj_servicio,Composición,0.0,49.85,0.5322,"más alto, menos riesgo",1.05,se queda,tiene señal y no es redundante,prop_obj_bien (-0.84),0.009
+prop_proc_adj_simplificada,Composición,0.0,46.43,0.5667,"más alto, más riesgo",1.1,se queda,tiene señal y no es redundante,ratio_adjudicado_referencial (-0.40),0.028
+prop_proc_comparacion_precios,Composición,0.0,82.55,0.5234,"más alto, menos riesgo",1.05,se queda,tiene señal y no es redundante,prop_obj_bien (0.36),0.0
+prop_proc_concurso,Composición,0.0,95.1,0.558,"más alto, más riesgo",1.3,se queda,tiene señal y no es redundante,monto_adjudicado_max (0.28),0.0
+prop_proc_directa,Composición,0.0,84.0,0.504,"más alto, menos riesgo",1.0,sale,sin poder predictivo (ROC-AUC < 0.52),prop_items_ganados_sin_competencia (0.42),0.0
+prop_proc_licitacion,Composición,0.0,94.5,0.5243,"más alto, más riesgo",1.06,se queda,tiene señal y no es redundante,monto_adjudicado_24m (0.31),0.0
+prop_proc_otros_procesos,Composición,0.0,85.43,0.5348,"más alto, menos riesgo",1.07,se queda,tiene señal y no es redundante,prop_items_lima_callao (0.42),0.0
+prop_proc_subasta_inversa,Composición,0.0,89.52,0.5062,"más alto, más riesgo",0.99,sale,sin poder predictivo (ROC-AUC < 0.52),prop_obj_bien (0.38),0.009
+prop_ent_empresa_estatal,Composición,0.0,89.97,0.5387,"más alto, más riesgo",1.05,se queda,tiene señal y no es redundante,monto_adjudicado_max (0.25),0.008
+prop_ent_gob_local,Composición,0.0,55.0,0.5223,"más alto, menos riesgo",1.0,se queda,tiene señal y no es redundante,prop_ent_gob_nacional (-0.61),0.01
+prop_ent_gob_nacional,Composición,0.0,61.27,0.5398,"más alto, más riesgo",0.99,se queda,tiene señal y no es redundante,prop_ent_gob_local (-0.61),0.001
+prop_ent_gob_regional,Composición,0.0,74.7,0.534,"más alto, más riesgo",0.99,se queda,tiene señal y no es redundante,prop_ent_gob_local (-0.34),0.001
+prop_items_lima_callao,Composición,0.0,66.15,0.5232,"más alto, más riesgo",0.97,se queda,tiene señal y no es redundante,prop_ent_gob_nacional (0.56),0.0
+ratio_adjudicado_referencial,Precio,0.0,37.16,0.6377,"más alto, menos riesgo",1.47,se queda,tiene señal y no es redundante,prop_items_bajo_80pct_referencial (-0.63),0.013
+prop_items_bajo_80pct_referencial,Precio,0.0,81.0,0.5938,"más alto, más riesgo",1.25,se queda,tiene señal y no es redundante,ratio_adjudicado_referencial (-0.63),0.039
+postores_promedio_items_ganados,Competencia,0.0,32.13,0.6535,"más alto, más riesgo",1.73,se queda,tiene señal y no es redundante,prop_items_ganados_sin_competencia (-0.85),0.008
+prop_items_ganados_sin_competencia,Competencia,0.0,50.8,0.5736,"más alto, menos riesgo",1.14,se queda,tiene señal y no es redundante,postores_promedio_items_ganados (-0.85),0.001
+n_ofertas_24m,Participación,0.0,36.04,0.7319,"más alto, más riesgo",2.99,se queda,tiene señal y no es redundante,n_ofertas_12m (0.82),0.168
+n_ofertas_12m,Participación,0.0,32.66,0.7055,"más alto, más riesgo",2.71,se queda,tiene señal y no es redundante,n_ofertas_24m (0.82),1.756
+tasa_exito,Participación,0.0,48.73,0.7138,"más alto, menos riesgo",2.3,se queda,tiene señal y no es redundante,n_ofertas_24m (-0.82),0.043
+n_penalidades,Ejecución,0.0,96.01,0.5751,"más alto, más riesgo",2.18,se queda,tiene señal y no es redundante,tiene_penalidad_previa (1.00),0.0
+n_penalidades_12m,Ejecución,0.0,97.66,0.5466,"más alto, más riesgo",1.88,se queda,tiene señal y no es redundante,dias_desde_ultima_penalidad (-0.76),0.0
+n_penalidades_mora,Ejecución,0.0,97.55,0.5446,"más alto, más riesgo",1.6,se queda,tiene señal y no es redundante,monto_penalidades (0.79),0.0
+monto_penalidades,Ejecución,0.0,96.01,0.5749,"más alto, más riesgo",1.93,sale,redundante con n_penalidades (rho = 1.00),tiene_penalidad_previa (1.00),0.0
+tiene_penalidad_previa,Ejecución,0.0,96.01,0.5745,"más alto, más riesgo",1.68,sale,redundante con n_penalidades (rho = 1.00),n_penalidades (1.00),0.0
+dias_desde_ultima_penalidad,Ejecución,0.0,96.01,0.5747,"más alto, menos riesgo",1.84,sale,redundante con n_penalidades (rho = -1.00),tiene_penalidad_previa (-1.00),0.002
+n_ampliaciones,Ejecución,0.0,97.86,0.513,"más alto, más riesgo",1.06,sale,sin poder predictivo (ROC-AUC < 0.52),monto_adjudicado_24m (0.16),0.04
+n_inhabilitaciones_previas,Antecedentes,0.0,98.29,0.5354,"más alto, más riesgo",1.5,se queda,tiene señal y no es redundante,n_previas_fraude_documental (0.87),0.006
+n_multas_previas,Antecedentes,0.0,98.37,0.5466,"más alto, más riesgo",1.8,se queda,tiene señal y no es redundante,n_previas_no_perfeccionar (0.92),0.001
+n_sanciones_previas_12m,Antecedentes,0.0,98.4,0.5453,"más alto, más riesgo",1.92,se queda,tiene señal y no es redundante,dias_desde_ultima_sancion (-0.72),0.0
+n_previas_fraude_documental,Antecedentes,0.0,98.7,0.5218,"más alto, más riesgo",1.24,se queda,tiene señal y no es redundante,n_inhabilitaciones_previas (0.87),0.004
+n_previas_impedido,Antecedentes,0.0,99.97,0.5003,"más alto, más riesgo",1.03,sale,casi constante y sin poder predictivo,inhabilitacion_indefinida_previa (0.12),0.0
+n_previas_no_perfeccionar,Antecedentes,0.0,98.59,0.5408,"más alto, más riesgo",1.72,sale,redundante con n_multas_previas (rho = 0.92),n_multas_previas (0.92),0.001
+n_previas_resolucion_contrato,Antecedentes,0.0,99.59,0.5166,"más alto, más riesgo",1.35,sale,casi constante y sin poder predictivo,n_inhabilitaciones_previas (0.48),0.004
+n_previas_otro_motivo,Antecedentes,0.0,99.74,0.5067,"más alto, más riesgo",1.09,sale,casi constante y sin poder predictivo,n_multas_previas (0.38),0.0
+tiene_sancion_previa,Antecedentes,0.0,96.81,0.5742,"más alto, más riesgo",1.81,sale,redundante con dias_desde_ultima_sancion (rho = -0.99),dias_desde_ultima_sancion (-0.99),0.0
+dias_desde_ultima_sancion,Antecedentes,0.0,96.89,0.5744,"más alto, menos riesgo",2.2,se queda,tiene señal y no es redundante,tiene_sancion_previa (-0.99),0.0
+inhabilitado_vigente_al_corte,Antecedentes,0.0,99.38,0.5158,"más alto, más riesgo",1.19,sale,sin poder predictivo (ROC-AUC < 0.52),n_inhabilitaciones_previas (0.60),0.0
+inhabilitacion_indefinida_previa,Antecedentes,0.0,99.99,0.5004,"más alto, más riesgo",1.01,sale,casi constante y sin poder predictivo,n_previas_impedido (0.12),0.0

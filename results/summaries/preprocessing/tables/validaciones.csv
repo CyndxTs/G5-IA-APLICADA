@@ -1,0 +1,13 @@
+﻿validación,resultado
+"una fila por (id_proveedor, fecha_corte)",OK
+sin nulos en ninguna columna,OK
+sin columnas constantes,OK
+target y componentes solo 0/1,OK
+target = inhabilitación o multa,OK
+solo RUC de 11 dígitos,OK
+ventanas coherentes: 6m <= 12m <= 24m y al menos 1 ítem en 24m,OK
+las predictoras no incluyen el target ni sus componentes,OK
+recálculo de ítems ganados (24 meses) en 400 filas,OK
+recálculo del target en 400 filas,OK
+recálculo de sanciones previas en 400 filas,OK
+recálculo de penalidades previas en 400 filas,OK

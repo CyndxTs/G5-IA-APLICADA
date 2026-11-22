@@ -1,0 +1,13 @@
+﻿fuente,paso,filas_antes,filas_despues,filas_quitadas,motivo
+ofertantes,postor repetido en el mismo ítem,1008414,1008193,221,filas duplicadas
+ofertantes,"postores sin RUC (consorcios, extranjeros)",1008193,836683,171510,no pertenecen a la población
+adjudicaciones,sin fecha de buena pro,317485,317405,80,sin fecha no sabemos desde cuándo se conoce el ítem
+adjudicaciones,consorcios y no domiciliados,317405,246034,71371,"solo tienen código, no RUC: sus sanciones no se pueden observar"
+adjudicaciones,mismo ganador repetido en un ítem,246034,246034,0,filas duplicadas
+penalidades,filas duplicadas,14963,14688,275,la misma penalidad registrada dos veces
+penalidades,fecha posterior a la descarga,14688,14686,2,fecha imposible
+penalidades,sin RUC de 11 dígitos,14686,14665,21,no se pueden cruzar con los proveedores
+ampliaciones,filas duplicadas,30789,30440,349,la misma ampliación registrada dos veces
+ampliaciones,contrato no está en el archivo de contratos o es de un consorcio,30440,7477,22963,sin contrato no sabemos de qué proveedor es
+ampliaciones,fecha posterior a la descarga,7477,7464,13,fecha imposible
+sanciones,"unir RNP y CONOSCE sin repetir (RUC, resolución, tipo)",27839,18058,9781,la misma resolución aparece en las dos fuentes
