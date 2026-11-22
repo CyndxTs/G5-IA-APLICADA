@@ -1,14 +1,28 @@
-# Entorno virtual de Python
+# Entorno virtual de Python (lo crea setup_entorno_virtual.bat)
 .venv/
 venv/
 env/
 
-# Archivos Python
+# Configuración local del editor
+# .vscode/settings.json lo genera setup_entorno_virtual.bat en cada máquina
+.vscode/
+.idea/
+
+# Archivos de Python
 __pycache__/
 *.py[cod]
+*.egg-info/
 
 # Jupyter Notebook
 .ipynb_checkpoints/
+
+# Archivos temporales de Excel / Office (se crean al abrir un archivo)
+~$*
+.~lock.*
+
+# Logs y cachés
+*.log
+.cache/
 
 # Variables de entorno y secretos
 .env
@@ -17,3 +31,4 @@ __pycache__/
 # Archivos temporales del sistema
 .DS_Store
 Thumbs.db
+desktop.ini
