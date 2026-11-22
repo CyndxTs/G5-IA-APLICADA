@@ -288,7 +288,20 @@ if errorlevel 1 (
 
 rem ==========================================
 echo.
-echo === 10. Desactivando entorno virtual ===
+echo === 10. Configurando VS Code para usar .venv ===
+
+if exist ".vscode\settings.json" (
+    echo [INFO] Ya existe .vscode\settings.json. No se modifica.
+    echo        Verifica que python.defaultInterpreterPath apunte a .venv.
+) else (
+    if not exist ".vscode" mkdir ".vscode"
+    call :write_workspace_settings
+    echo [OK] .vscode\settings.json creado. El interprete por defecto es .venv.
+)
+
+rem ==========================================
+echo.
+echo === 11. Desactivando entorno virtual ===
 
 call ".venv\Scripts\deactivate.bat" >nul 2>&1
 echo [OK] Entorno virtual desactivado.
@@ -304,10 +317,11 @@ echo [OK] Entorno virtual recreado: .venv
 echo [OK] pip actualizado.
 echo [OK] ipykernel instalado en .venv.
 echo [OK] Dependencias instaladas.
+echo [OK] VS Code configurado para usar .venv.
 echo.
 
 rem ==========================================
-echo === 11. Abriendo VS Code con el proyecto ===
+echo === 12. Abriendo VS Code con el proyecto ===
 
 echo [INFO] Se abrira en modo de confianza ^(sin Restricted Mode^) solo en esta sesion.
 call "!CODE_CMD!" --disable-workspace-trust "%CD%"
@@ -407,6 +421,12 @@ if not errorlevel 1 (
 )
 :wait_code_done
 echo [OK] VS Code cerrado.
+exit /b 0
+
+:write_workspace_settings
+> ".vscode\settings.json" echo {
+>> ".vscode\settings.json" echo     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe"
+>> ".vscode\settings.json" echo }
 exit /b 0
 
 :detect_py
