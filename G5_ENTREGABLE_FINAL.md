@@ -22,4 +22,4 @@ Deadline: 23 de noviembre 11:55 am
 [https\://github.com/CyndxTs/G5-IA-APLICADA](https://github.com/CyndxTs/G5-IA-APLICADA)
 
 **III. Commit hash del último commit considerado para la entrega (OBLIGATORIO):**  
-\[COMPLETAR\]  
+d03e912d813f4314e7682c5c09d00be7afebf56e  
