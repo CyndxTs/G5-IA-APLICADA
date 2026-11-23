@@ -13,10 +13,10 @@ Deadline: domingo 11 de octubre 11:55 pm
 
 |  | Nombre integrante | Descripción de su contribución |
 | :---- | :---- | :---- |
-| **1** | **Giovanni Junior Rojas Turin** | **Paper correspondiente Análisis Exploratorio de Datos Validación de resultados de Comparación** |
-| **2** | **Elvis Quispe Mamani** | **Paper correspondiente Análisis Exploratorio de Datos readme.md** |
-| **3** | **Eduardo Valladares Coronado** | **Paper correspondiente Análisis Exploratorio de Datos Apoyo con el desarrollo del preprocesamiento** |
-| **4** | **César Augusto Napurí de la Cruz** | **Paper correspondiente Análisis Exploratorio de Datos Desarrollo del preprocesamiento Desarrollo de la comparación de los modelos** |
+| **1** | **César Augusto Napurí de la Cruz** | **Paper correspondiente. Análisis exploratorio de datos. Preprocesamiento general y por modelo. Propuesta y desarrollo de los modelos.** |
+| **2** | **Eduardo Valladares Coronado** | **Paper correspondiente. Análisis exploratorio de datos. Preprocesamiento general y por modelo.** |
+| **3** | **Elvis Quispe Mamani** | **Paper correspondiente. Análisis exploratorio de datos. Validación de resultados obtenidos. README.md** |
+| **4** | **Giovanni Junior Rojas Turin** | **Paper correspondiente. Análisis exploratorio de datos. Validación de resultados obtenidos.** |
 
 **II. Enlace al repositorio GitHub\*:**  
 [https\://github.com/CyndxTs/G5-IA-APLICADA.git](https://github.com/CyndxTs/G5-IA-APLICADA.git)

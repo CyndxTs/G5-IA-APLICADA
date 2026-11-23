@@ -60,10 +60,10 @@ El preprocesamiento genera `data/processed/dataset_proveedor_corte.csv`:
 ```text
 G5-IA-APLICADA/
 ├── README.md
-├── ENTREGABLE_PARCIAL.md    # checklist de lo entregado en la semana 8
-├── ENTREGABLE_FINAL.md      # checklist de lo entregado en la semana 15
-├── report.pdf               # reporte final (formato paper)
-├── presentation.pdf         # diapositivas de la presentación
+├── G5_ENTREGABLE_PARCIAL.md # checklist de lo entregado en la semana 8
+├── G5_ENTREGABLE_FINAL.md   # checklist de lo entregado en la semana 15
+├── G5_REPORTE.pdf           # reporte final (formato paper)
+├── G5_PRESENTACION.pdf      # diapositivas de la presentación
 ├── requirements.txt
 ├── setup_entorno_virtual.bat
 ├── data/
@@ -147,7 +147,7 @@ Preprocesamiento propio y configuración elegida de cada modelo:
 | KNN | `StandardScaler` | umbral y k grande | `n_neighbors = 1601`, `weights = "uniform"` |
 | MLP (Keras `Sequential`) | `StandardScaler` | pesos de clase en `fit` | capas (256, 128, 64), `dropout = 0.5`, `adam`, early stopping por PR-AUC de validación |
 
-Usamos pesos de clase en vez de submuestrear (Sá et al., 2024) porque no descartan datos y, según Gallego et al. (2021), funcionan igual o mejor.
+Usamos pesos de clase para conservar la distribución real: el submuestreo de Sá et al. (2024) descartaría a casi todos los proveedores no sancionados. Gallego et al. (2021) obtuvieron un ranking algo mejor con sobremuestreo, así que probarlo queda como trabajo futuro.
 
 Métricas, pensadas para ordenar proveedores a revisar:
 - PR-AUC (principal): más exigente que la ROC-AUC con 2% de positivos; el azar vale la prevalencia.
