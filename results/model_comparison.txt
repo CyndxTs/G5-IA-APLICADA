@@ -1,0 +1,44 @@
+COMPARACIÓN DE MODELOS - Riesgo de sanción de proveedores del Estado (horizonte de 12 meses)
+============================================================================================
+
+Datos
+- Selección: modelos entrenados con cortes hasta 2023-12-31 (todos los cortes) y medidos en validación (2024-12-31).
+- Modelos finales: reentrenados con todos los cortes hasta 2024-06-30 (117,770 filas, 2,373 positivos).
+- Validación: 2024-12-31 | Prueba: 2025-06-30 (32,738 proveedores, 795 sancionados; azar = prevalencia = 0.024).
+- 39 predictoras. Cortes, hiperparámetros, umbral (como % de alertas) y épocas del MLP elegidos en validación; prueba usada una sola vez.
+
+Resultados en PRUEBA
+                     PR-AUC  PR-AUC / azar  ROC-AUC  Recall top 10%  Precision top 10%  Lift top 10%  Precision  Recall    F1  Brier
+Modelo                                                                                                                              
+Regresión logística   0.115          4.751    0.808           0.430              0.104         4.302      0.174   0.142 0.157  0.192
+Árbol de decisión     0.086          3.535    0.761           0.365              0.089         3.648      0.106   0.317 0.159  0.188
+KNN                   0.104          4.298    0.796           0.419              0.102         4.188      0.143   0.213 0.171  0.023
+MLP                   0.116          4.771    0.802           0.436              0.106         4.365      0.160   0.208 0.181  0.188
+
+Intervalos de confianza al 95% (bootstrap, 1000 remuestreos)
+- Regresión logística: PR-AUC 0.115 [0.100, 0.136] | Recall top 10% 0.430 [0.399, 0.460]
+- Árbol de decisión: PR-AUC 0.086 [0.075, 0.100] | Recall top 10% 0.365 [0.326, 0.389]
+- KNN: PR-AUC 0.104 [0.090, 0.122] | Recall top 10% 0.419 [0.390, 0.453]
+- MLP: PR-AUC 0.116 [0.100, 0.136] | Recall top 10% 0.436 [0.402, 0.467]
+
+Comparación con el baseline (Regresión logística), diferencia de PR-AUC con intervalo pareado
+- Árbol de decisión: -0.030 [-0.044, -0.018] -> peor que el baseline
+- KNN: -0.011 [-0.020, -0.003] -> peor que el baseline
+- MLP: +0.000 [-0.006, +0.008] -> sin diferencia clara
+
+Análisis
+- Mejor modelo por PR-AUC en prueba: MLP (0.116, 4.8 veces el azar).
+- Orden: MLP (0.116) > Regresión logística (0.115) > KNN (0.104) > Árbol de decisión (0.086).
+- Revisando el 10% de proveedores con más riesgo, MLP encuentra el 44% de los futuros sancionados, con una precision de 10.6% (4.4 veces la tasa promedio).
+- Grupos de variables más importantes (promedio de los 4 modelos): Participación, Antecedentes, Ejecución.
+- Por subgrupo (MLP, top 10%): encuentra el 93% de los sancionados con sanción previa y el 33% de los que no tenían; el 43% de las inhabilitaciones y el 47% de las multas.
+
+Limitaciones
+- Los archivos de contratos cubren ~9% de lo adjudicado; el historial se construyó con adjudicaciones.
+- Consorcios y no domiciliados quedan fuera: no tienen RUC y sus sanciones no se pueden observar.
+- Las listas de sanciones solo cubren ~5 años: antecedentes subestimados en los primeros cortes.
+- 'No sancionado' significa que no se observó una sanción en 12 meses, no que el proveedor cumplió.
+- Las probabilidades no están calibradas (pesos de clase): sirven para ordenar, no como % real de riesgo.
+- Un solo corte de validación y uno de prueba; la prevalencia cambia entre cortes.
+
+Uso: el puntaje sirve para priorizar revisiones. Un riesgo alto no prueba fraude ni responsabilidad.

@@ -1,0 +1,5 @@
+﻿conjunto,cortes,filas,positivos,prevalencia_%,uso
+selección,"2022-06-30, 2022-12-31, 2023-06-30, 2023-12-31",86093,1837,2.13,"entrenar para elegir cortes, hiperparámetros, umbral y época"
+validación,2024-12-31,31200,594,1.9,medir y elegir (target conocido recién en dic-2025)
+entrenamiento,"2022-06-30, 2022-12-31, 2023-06-30, 2023-12-31, 2024-06-30",117770,2373,2.01,entrenar los modelos finales
+prueba,2025-06-30,32738,795,2.43,"evaluación final, una sola vez"

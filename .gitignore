@@ -8,6 +8,9 @@ env/
 .vscode/
 .idea/
 
+# Modelos entrenados (se regeneran con notebooks/03_modelos.ipynb o python src/models.py)
+models/
+
 # Archivos de Python
 __pycache__/
 *.py[cod]

@@ -1,0 +1,68 @@
+﻿Modelo,configuracion,pr_auc_entrenamiento,pr_auc_validacion,elegida
+Regresión logística,C=1e-05,0.10746820908969348,0.08431099755602396,False
+Regresión logística,C=0.0001,0.11443525045304492,0.08722580251513912,True
+Regresión logística,C=0.001,0.11362875902893035,0.08549898344961489,False
+Regresión logística,C=0.01,0.1130648316915986,0.08462661339193793,False
+Regresión logística,C=0.1,0.11296305988454357,0.08419775960340622,False
+Regresión logística,C=1,0.11288824415480841,0.08403469051654731,False
+Árbol de decisión,"max_depth=3, min_samples_leaf=50",0.05975885888101025,0.04541651277731838,False
+Árbol de decisión,"max_depth=3, min_samples_leaf=100",0.06029469377920173,0.045368369873233935,False
+Árbol de decisión,"max_depth=3, min_samples_leaf=200",0.06029469377920173,0.045368369873233935,False
+Árbol de decisión,"max_depth=3, min_samples_leaf=400",0.059270635360528574,0.04512515995580505,False
+Árbol de decisión,"max_depth=3, min_samples_leaf=800",0.05656160739318331,0.045182289038034285,False
+Árbol de decisión,"max_depth=4, min_samples_leaf=50",0.0805331784137912,0.056177831949917365,False
+Árbol de decisión,"max_depth=4, min_samples_leaf=100",0.07926540568160734,0.054858482591572,False
+Árbol de decisión,"max_depth=4, min_samples_leaf=200",0.07873688017785817,0.055407925478364886,False
+Árbol de decisión,"max_depth=4, min_samples_leaf=400",0.07848449194994915,0.05559453253448052,False
+Árbol de decisión,"max_depth=4, min_samples_leaf=800",0.07038053970631404,0.05368100740233192,False
+Árbol de decisión,"max_depth=6, min_samples_leaf=50",0.11213000308952933,0.06198536451777536,False
+Árbol de decisión,"max_depth=6, min_samples_leaf=100",0.10867366906139468,0.06318670225580471,False
+Árbol de decisión,"max_depth=6, min_samples_leaf=200",0.10299383180360543,0.0634038868088006,False
+Árbol de decisión,"max_depth=6, min_samples_leaf=400",0.0992411049181672,0.06267987353937804,False
+Árbol de decisión,"max_depth=6, min_samples_leaf=800",0.08365666869227331,0.059830179773914784,False
+Árbol de decisión,"max_depth=8, min_samples_leaf=50",0.14016524024475174,0.06520812763848428,False
+Árbol de decisión,"max_depth=8, min_samples_leaf=100",0.1336880754679449,0.06586508510204998,True
+Árbol de decisión,"max_depth=8, min_samples_leaf=200",0.12100427780631284,0.06524407556778244,False
+Árbol de decisión,"max_depth=8, min_samples_leaf=400",0.10903210181879713,0.06359640003883281,False
+Árbol de decisión,"max_depth=8, min_samples_leaf=800",0.08658592278636285,0.05918490266530956,False
+Árbol de decisión,"max_depth=10, min_samples_leaf=50",0.17383345722500365,0.05739079819653526,False
+Árbol de decisión,"max_depth=10, min_samples_leaf=100",0.15454270058551953,0.06223067581908469,False
+Árbol de decisión,"max_depth=10, min_samples_leaf=200",0.13516176918970363,0.06324619400713644,False
+Árbol de decisión,"max_depth=10, min_samples_leaf=400",0.11220813012812275,0.06318217244398715,False
+Árbol de decisión,"max_depth=10, min_samples_leaf=800",0.08702770985939176,0.05896912395671361,False
+Árbol de decisión,"max_depth=12, min_samples_leaf=50",0.20232602144320222,0.05544873793902038,False
+Árbol de decisión,"max_depth=12, min_samples_leaf=100",0.16425683067372457,0.05947333460821577,False
+Árbol de decisión,"max_depth=12, min_samples_leaf=200",0.13847032601192474,0.06175122908609733,False
+Árbol de decisión,"max_depth=12, min_samples_leaf=400",0.1126124356423909,0.06319299021377144,False
+Árbol de decisión,"max_depth=12, min_samples_leaf=800",0.08702770985939176,0.05896912395671361,False
+KNN,"n_neighbors=51, weights=uniform",,0.05303899174677853,False
+KNN,"n_neighbors=51, weights=distance",,0.05709085372207599,False
+KNN,"n_neighbors=101, weights=uniform",,0.062133910173265736,False
+KNN,"n_neighbors=101, weights=distance",,0.0644852800560388,False
+KNN,"n_neighbors=201, weights=uniform",,0.06863617476873923,False
+KNN,"n_neighbors=201, weights=distance",,0.06972360589902639,False
+KNN,"n_neighbors=401, weights=uniform",,0.07541045983725192,False
+KNN,"n_neighbors=401, weights=distance",,0.07325503740698035,False
+KNN,"n_neighbors=801, weights=uniform",,0.07960803175391981,False
+KNN,"n_neighbors=801, weights=distance",,0.07873500986018944,False
+KNN,"n_neighbors=1201, weights=uniform",,0.08176139313207559,False
+KNN,"n_neighbors=1201, weights=distance",,0.08096588175657185,False
+KNN,"n_neighbors=1601, weights=uniform",,0.0840244706845217,True
+KNN,"n_neighbors=1601, weights=distance",,0.08174127217807028,False
+KNN,"n_neighbors=2401, weights=uniform",,0.08305923062452569,False
+KNN,"n_neighbors=2401, weights=distance",,0.08181031016807402,False
+MLP,"capas=(16,), dropout=0.0",0.12873859536651622,0.09015205036040407,False
+MLP,"capas=(16,), dropout=0.3",0.12956373490731302,0.09269551831669402,True
+MLP,"capas=(16,), dropout=0.5",0.12378415395941639,0.09165290000924226,False
+MLP,"capas=(64, 32), dropout=0.0",0.13146851411964613,0.08959656381270448,False
+MLP,"capas=(64, 32), dropout=0.3",0.1368595593503068,0.08993131907479134,False
+MLP,"capas=(64, 32), dropout=0.5",0.1268231873929602,0.0897346735358201,False
+MLP,"capas=(128, 64, 32), dropout=0.0",0.1304779528829287,0.08631883215026846,False
+MLP,"capas=(128, 64, 32), dropout=0.3",0.13717063412942443,0.09037018076971354,False
+MLP,"capas=(128, 64, 32), dropout=0.5",0.12729838586370407,0.09090357456417344,False
+MLP,"capas=(256, 128, 64), dropout=0.0",0.13206057082419245,0.08845441397190565,False
+MLP,"capas=(256, 128, 64), dropout=0.3",0.1344012619188072,0.08969383676257857,False
+MLP,"capas=(256, 128, 64), dropout=0.5",0.13330853825999084,0.09193260132841,False
+MLP,"capas=(512, 256, 128), dropout=0.0",0.12988822107401293,0.08703901888176722,False
+MLP,"capas=(512, 256, 128), dropout=0.3",0.12119063533917289,0.08916647570272518,False
+MLP,"capas=(512, 256, 128), dropout=0.5",0.1265829707400401,0.09170790415034011,False
